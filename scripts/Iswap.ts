@@ -50,15 +50,13 @@ async function main() {
     "0x100000000000000000",
   ]);
 
-  const ApproveTransaction = await interactwithDAi.approve(
-    swapper.address,
-    "900000000000000000000000000000"
-  );
+  const ApproveTransaction = await interactwithDAi
+    .connect(signer)
+    .approve(swapper.address, "900000000000000000000000000000");
 
-  const ApproveTransaction2 = await interactwithLink.approve(
-    swapper.address,
-    "900000000000000000000000000000"
-  );
+  const ApproveTransaction2 = await interactwithLink
+    .connect(signer2)
+    .approve(swapper.address, "900000000000000000000000000000");
   //transfer token to swapper contract
 
   const linkInContract = await interactwithLink
