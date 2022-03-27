@@ -6,8 +6,8 @@ import "./IERC.sol";
 
 contract Swapper {
     AggregatorV3Interface internal priceFeed;
-    IERC20 internal daiToken =
-        IERC20(0x6B175474E89094C44Da98b954EedeAC495271d0F);
+    IERC20 internal usdtToken =
+        IERC20(0xdAC17F958D2ee523a2206206994597C13D831ec7);
     IERC20 internal linkToken =
         IERC20(0x514910771AF9Ca656af840dff83E8264EcF986CA);
 
@@ -16,8 +16,6 @@ contract Swapper {
             0xca236E327F629f9Fc2c30A4E95775EbF0B89fac8
         );
     }
-
-    // clo to usd = 0x10D35eFa5C26C3d994C511576641248405465AeF
 
     /**
      * Returns the latest price
@@ -35,18 +33,18 @@ contract Swapper {
         return price;
     }
 
-    function swapDAItoLink(uint256 amountIn)
+    function swapUSDTtoLink(uint256 amountIn)
         public
         returns (uint256 amountOut)
     {
-        require(daiToken.transferFrom(msg.sender, address(this), amountIn));
+        require(usdtToken.transferFrom(msg.sender, address(this), amountIn));
         uint256 pricePerDai = uint256(tokenPrice());
         uint256 conversion = pricePerDai / amountIn;
         amountOut = conversion / 18;
         linkToken._transfer(address(this), msg.sender, amountOut);
     }
 
-    function swapLinktoDAI(uint256 amountIn)
+    function swapLinktoUSDT(uint256 amountIn)
         public
         returns (uint256 amountOut)
     {
@@ -54,6 +52,6 @@ contract Swapper {
         uint256 pricePerDai = uint256(tokenPrice());
         uint256 conversion = pricePerDai * amountIn;
         amountOut = conversion / 18;
-        daiToken._transfer(address(this), msg.sender, amountOut);
+        usdtToken._transfer(address(this), msg.sender, amountOut);
     }
 }
