@@ -13,9 +13,11 @@ contract Swapper {
 
     constructor() {
         priceFeed = AggregatorV3Interface(
-            0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9
+            0xca236E327F629f9Fc2c30A4E95775EbF0B89fac8
         );
     }
+
+    // clo to usd = 0x10D35eFa5C26C3d994C511576641248405465AeF
 
     /**
      * Returns the latest price
@@ -39,7 +41,8 @@ contract Swapper {
     {
         require(daiToken.transferFrom(msg.sender, address(this), amountIn));
         uint256 pricePerDai = uint256(tokenPrice());
-        amountOut = pricePerDai / amountIn;
+        uint256 conversion = pricePerDai / amountIn;
+        amountOut = conversion / 18;
         linkToken._transfer(address(this), msg.sender, amountOut);
     }
 
@@ -49,7 +52,8 @@ contract Swapper {
     {
         require(linkToken.transferFrom(msg.sender, address(this), amountIn));
         uint256 pricePerDai = uint256(tokenPrice());
-        amountOut = pricePerDai * amountIn;
+        uint256 conversion = pricePerDai * amountIn;
+        amountOut = conversion / 18;
         daiToken._transfer(address(this), msg.sender, amountOut);
     }
 }
